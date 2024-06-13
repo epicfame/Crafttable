@@ -11,20 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transactions', function (Blueprint $table) {
+        Schema::create('price_list_histories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('customer_id');
-            $table->string('transaction_type', 20);
-            $table->string('status', 50);
-            $table->decimal('shipping_cost', 18, 3);
-            $table->string('shipping_method', 50);
+            $table->decimal('price', 18, 3);
+            $table->unsignedBigInteger('price_list_id');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->dateTime('deleted_at')->nullable();
 
             // adding index and foreign key
-            $table->index('customer_id', 'transaction_index_1');
-            $table->foreign('customer_id')->references('id')->on('customers');
+            $table->index('price_list_id', 'price_list_histories_index_1');
+            $table->foreign('price_list_id')->references('id')->on('price_lists');
+
         });
     }
 
@@ -33,12 +31,14 @@ return new class extends Migration
      */
     public function down(): void
     {
+
         // remove the index and foreign first before dropping
-        Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['customer_id']);
-            $table->dropIndex('transaction_index_1');
+        Schema::table('price_list_histories', function (Blueprint $table) {
+            // penamaan foreign 'nama_table' + 'nama_kolom' + '_foreign'
+            $table->dropForeign(['price_list_id']);
+            $table->dropIndex('price_list_histories_index_1');
         });
 
-        Schema::dropIfExists('transactions');
+        Schema::dropIfExists('price_list_histories');
     }
 };

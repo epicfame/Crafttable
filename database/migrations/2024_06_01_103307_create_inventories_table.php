@@ -11,21 +11,20 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('transaction_details', function (Blueprint $table) {
+        Schema::create('inventories', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('transaction_id');
             $table->unsignedBigInteger('product_id');
-            $table->decimal('quantity', 18, 3);
+            $table->unsignedBigInteger('customer_id');
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->dateTime('deleted_at')->nullable();
 
             // adding index and foreign key
-            $table->index('transaction_id', 'transaction_detail_index_1');
-            $table->foreign('transaction_id')->references('id')->on('transactions');
-
-            $table->index('product_id', 'transaction_detail_index_2');
+            $table->index('product_id', 'inventories_index_1');
             $table->foreign('product_id')->references('id')->on('products');
+
+            $table->index('customer_id', 'inventories_index_2');
+            $table->foreign('customer_id')->references('id')->on('customers');
         });
     }
 
@@ -35,13 +34,14 @@ return new class extends Migration
     public function down(): void
     {
         // remove the index and foreign first before dropping
-        Schema::table('transaction_details', function (Blueprint $table) {
-            $table->dropForeign(['transaction_id']);
+        Schema::table('inventories', function (Blueprint $table) {
+            // penamaan foreign 'nama_table' + 'nama_kolom' + '_foreign'
             $table->dropForeign(['product_id']);
-            $table->dropIndex('transaction_detail_index_1');
-            $table->dropIndex('transaction_detail_index_2');
+            $table->dropForeign(['customer_id']);
+            $table->dropIndex('inventories_index_1');
+            $table->dropIndex('inventories_index_2');
         });
 
-        Schema::dropIfExists('transaction_details');
+        Schema::dropIfExists('inventories');
     }
 };

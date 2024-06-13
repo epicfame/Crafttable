@@ -14,10 +14,12 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('product_name', 50);
-            $table->string('description', 255);
+            $table->longText('product_description')->charset('binary'); // LONGBLOB
             $table->dateTime('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->dateTime('updated_at')->default(DB::raw('CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP'));
             $table->dateTime('deleted_at')->nullable();
+
+            $table->unique('product_name', 'unique_product_name');
         });
     }
 
