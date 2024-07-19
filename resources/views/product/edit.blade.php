@@ -5,8 +5,9 @@
         <button onclick="back()" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Back</button>
         <button onclick="confirmDelete()" class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
     </div>
-    <form name="edit_product" id="edit_product" method="POST" action="{{ url('/product') }}">
+    <form name="edit_product" id="edit_product" method="POST" action="/products/{{$product->id}}/update">
         @csrf
+        @method('PUT')
         <table>
             <tr>
                 <td><label for="product_photo">Product Photo</label></td>
@@ -22,7 +23,7 @@
             </tr>
         </table>
         <div>
-        <button type="submit" class="btn btn-primary" onclick="confirmUpdate()">Update</button>
+        <button type="submit" class="btn btn-primary">Update</button>
     </form>
 @endsection
 
@@ -61,10 +62,15 @@
             showConfirmationDialog('Confimation', 'Are you sure you want to update this product', 'updateProduct')
         }
 
+        $('#edit_product').submit(function(e){
+            e.preventDefault()
+            updateProduct();
+        })
+
         function updateProduct(){
             $.ajax({
-                url: "{{ url('/product/' . $product->id) . '/update' }}",
-                type: "PUT",
+                url: "{{ route('products.updateproduct', ['id' => $product->id]) }}",
+                type: "POST",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

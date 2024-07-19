@@ -135,57 +135,48 @@ class ProductController extends Controller
 
     public function updateProduct(Request $request, string $id)
     {
-        //
         $response = [
             'success' => false,
             'message' => 'UNKNOWN ERROR',
             'datas' => [],
         ];
         try {
-
-            //validate the id
-            if($id != ''){
+            // Validate the ID
+            if ($id == '') {
                 $response['message'] = 'No data found';
                 return response()->json($response);
             }
 
+            // Retrieve the product
             $product = Product::find($id);
-            if($product == ''){
+            if (!$product) {
                 $response['message'] = 'No data found';
                 return response()->json($response);
             }
 
             // Example: Store product logic
-            $productName = $request->product_name != '' ? strtoupper($request->product_name) : '';
-            $productDescription = $request->product_description != '' ? strtoupper($request->product_description) : '';
+            $productName = $request->input('product_name', '');
+            $productDescription = $request->input('product_description', '');
 
-            // validate the input
-            // 1. Product name must be filled
-            if($productName == ''){
+            // Validate the input
+            if (empty($productName)) {
                 $response['message'] = 'Product name must be filled!';
                 return response()->json($response);
             }
 
-            // 2. Product name must be unique
-            $tempProduct = Product::where('product_name', $productName)
-                                    ->where('id', '!=', $id)
-                                    ->first();
-            if($tempProduct != ''){
-                $response['message'] = 'Product name must be unqiue!';
+            // Check if product name is unique
+            $existingProduct = Product::where('product_name', $productName)
+                ->where('id', '!=', $id)
+                ->first();
+            if ($existingProduct) {
+                $response['message'] = 'Product name must be unique!';
                 return response()->json($response);
             }
 
-            // save to the database for connection from config
-            $connectionName = config('database.default');
-            $connection = DB::connection($connectionName);
-            $connection->beginTransaction();
-
-            $product = Product::find($id);
-            $product->product_name = $productName;
-            $product->product_description = $productDescription;
+            // Update the product
+            $product->product_name = strtoupper($productName);
+            $product->product_description = strtoupper($productDescription);
             $product->save();
-
-            $connection->commit();
 
             $response['success'] = true;
             $response['message'] = 'Product updated successfully';
@@ -193,13 +184,11 @@ class ProductController extends Controller
 
             return response()->json($response);
         } catch (\Exception $e) {
-            if (isset($connection)) {
-                $connection->rollBack();
-            }
             Log::error('Error in update product: ' . $e->getMessage());
             return response()->json($response);
         }
     }
+
 
     /**
      * Update the specified resource in storage.
