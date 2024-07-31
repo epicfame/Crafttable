@@ -69,8 +69,8 @@
 
         function updateProduct(){
             $.ajax({
-                url: "{{ route('products.updateproduct', ['id' => $product->id]) }}",
-                type: "POST",
+                url: "/product/" + {{$product->id}},
+                type: "PUT",
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },

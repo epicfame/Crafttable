@@ -133,67 +133,10 @@ class ProductController extends Controller
 
     }
 
-    public function updateProduct(Request $request, string $id)
-    {
-        $response = [
-            'success' => false,
-            'message' => 'UNKNOWN ERROR',
-            'datas' => [],
-        ];
-        try {
-            // Validate the ID
-            if ($id == '') {
-                $response['message'] = 'No data found';
-                return response()->json($response);
-            }
-
-            // Retrieve the product
-            $product = Product::find($id);
-            if (!$product) {
-                $response['message'] = 'No data found';
-                return response()->json($response);
-            }
-
-            // Example: Store product logic
-            $productName = $request->input('product_name', '');
-            $productDescription = $request->input('product_description', '');
-
-            // Validate the input
-            if (empty($productName)) {
-                $response['message'] = 'Product name must be filled!';
-                return response()->json($response);
-            }
-
-            // Check if product name is unique
-            $existingProduct = Product::where('product_name', $productName)
-                ->where('id', '!=', $id)
-                ->first();
-            if ($existingProduct) {
-                $response['message'] = 'Product name must be unique!';
-                return response()->json($response);
-            }
-
-            // Update the product
-            $product->product_name = strtoupper($productName);
-            $product->product_description = strtoupper($productDescription);
-            $product->save();
-
-            $response['success'] = true;
-            $response['message'] = 'Product updated successfully';
-            $response['datas'] = $product;
-
-            return response()->json($response);
-        } catch (\Exception $e) {
-            Log::error('Error in update product: ' . $e->getMessage());
-            return response()->json($response);
-        }
-    }
-
-
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
         //
         $response = [
@@ -204,7 +147,7 @@ class ProductController extends Controller
         try {
 
             //validate the id
-            if($id != ''){
+            if($id == ''){
                 $response['message'] = 'No data found';
                 return response()->json($response);
             }

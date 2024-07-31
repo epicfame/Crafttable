@@ -57,11 +57,11 @@
                         <i class="fs-5 bi-speedometer2"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Price List</span> </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-truncate">
+                    <a href="/order" class="nav-link text-truncate">
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Orders</span></a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-truncate">
+                    <a href="/purchasing" class="nav-link text-truncate">
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Purchasing</span></a>
                 </li>
                 <li>
@@ -69,15 +69,15 @@
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Product</span></a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-truncate">
+                    <a href="/inventory" class="nav-link text-truncate">
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Inventory</span></a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-truncate">
+                    <a href="/customer" class="nav-link text-truncate">
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Customer</span></a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link text-truncate">
+                    <a href="/supplier" class="nav-link text-truncate">
                         <i class="fs-5 bi-table"></i><span class="ms-1 d-none d-sm-inline" style="color: white">Supplier</span></a>
                 </li>
                 {{-- <li class="dropdown">
